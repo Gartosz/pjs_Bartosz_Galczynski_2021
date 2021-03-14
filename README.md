@@ -11,8 +11,8 @@ Zasada działania: bot będzie przyjmował wpisywane przez użytkowników komend
 Dostępne mają być: odtwarzacz muzyki na kanale, na którym znajduje się użytkownik; granie z użytkownikami w proste gry typu kółko krzyżyk, rzut monetą czy zgadywanie wylosowanej liczby(w postaci tekstowej); ustawianie wydarzeń oraz ich przypominanie w wybranym czasie w wiadomości prywatnej;
 
 Szczegółowy plan:
-Do 12.03.2021 - utworzenie repozytorium github oraz dodanie aplikacji do panelu dewelopera discord 
-Do 14.03.2021 - dokładne zapoznanie się ze środowiskiem
+Do 12.03.2021 - utworzenie repozytorium github oraz dodanie aplikacji do panelu dewelopera discord +
+Do 14.03.2021 - dokładne zapoznanie się ze środowiskiem +
 Do 17.03.2021 - sprawdzenie działania podstawowych funkcji bota - odpowiadanie na komendy, dołączanie i rozłączanie z kanałami głosowymi
 Do 21.03.2021 - odtwarzanie muzyki za pomocą bota
 Do 28.03.2021 - przesuwanie i pomijanie utworów 

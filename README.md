@@ -13,7 +13,7 @@ Dostępne mają być: odtwarzacz muzyki na kanale, na którym znajduje się uży
 Szczegółowy plan:
 Do 12.03.2021 - utworzenie repozytorium github oraz dodanie aplikacji do panelu dewelopera discord ✔️
 Do 14.03.2021 - dokładne zapoznanie się ze środowiskiem ✔️
-Do 17.03.2021 - sprawdzenie działania podstawowych funkcji bota - odpowiadanie na komendy, dołączanie i rozłączanie z kanałami głosowymi
+Do 17.03.2021 - sprawdzenie działania podstawowych funkcji bota - odpowiadanie na komendy, dołączanie i rozłączanie z kanałami głosowymi ✔️
 Do 21.03.2021 - odtwarzanie muzyki za pomocą bota
 Do 28.03.2021 - przesuwanie i pomijanie utworów 
 Do 04.04.2021 - kolejkowanie i usuwanie utworów

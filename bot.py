@@ -1,6 +1,5 @@
-# bot.py
 import os
-import discord
+import traceback
 from discord.ext import commands
 from dotenv import load_dotenv
 

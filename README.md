@@ -19,7 +19,7 @@ Do 14.03.2021 - dokładne zapoznanie się ze środowiskiem
 Do 17.03.2021 - sprawdzenie działania podstawowych funkcji bota - odpowiadanie na komendy, dołączanie i rozłączanie z kanałami głosowymi
 Do 21.03.2021 - odtwarzanie muzyki za pomocą bota
 Do 28.03.2021 - przesuwanie i pomijanie utworów 
-Do 04.04.2021 - kolejkowanie i usuwanie utworów
+Do 04.04.2021 - kolejkowanie, usuwanie i zapętlanie utworów oraz zmiana głośności
 Do 11.04.2021 - opracowanie gry kółko krzyżyk
 Do 14.04.2021 - opracowanie rzutu monetą
 Do 18.04.2021 - opracowanie losowania liczb

@@ -43,10 +43,10 @@ class muzyka(commands.Cog):
             URL = info['formats'][0]['url']
         return URL
 
-    async def playing_now(self,ctx,type):
+    async def playing_now(self,ctx,type,n):
         song_link = discord.Embed(
             title=type,
-            description="["+get_video_title(self.music_queue[self.number])+"]("+self.music_queue[self.number]+")"
+            description="["+get_video_title(self.music_queue[n])+"]("+self.music_queue[n]+")"
         )
         await ctx.send(embed=song_link)
 
@@ -56,9 +56,9 @@ class muzyka(commands.Cog):
             self.number += 1
         if len(self.music_queue)==self.number and self.loop==1:
             self.number=0
-        if self.music_queue[self.number] and self.stop:
+        if len(self.music_queue)>self.number and self.stop:
             if self.loop<2:
-                _loop.create_task(self.playing_now(ctx,'Odtwarzanie'))
+                _loop.create_task(self.playing_now(ctx,'Odtwarzanie',self.number))
             self.current=self.music_queue[self.number]
             voice.play(discord.FFmpegPCMAudio(self.yt_play(self.current), **ffmpeg_options), after=lambda a: self.play_next(ctx))
             voice.source = discord.PCMVolumeTransformer(voice.source, volume=self.volume)
@@ -67,7 +67,7 @@ class muzyka(commands.Cog):
 
 
     @bot.command(name='play', aliases=['graj','p'])
-    async def play_command(self,ctx,*, music_name):
+    async def play_command(self,ctx,*,music_name):
         bot_voice = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild)
         author_voice = ctx.author.voice
 
@@ -83,10 +83,10 @@ class muzyka(commands.Cog):
             wyniki = re.findall(r'watch\?v=(\S{11})', html.read().decode())
             music_url=("https://www.youtube.com/watch?v=" + wyniki[0])
 
-        if bot_voice is None or not bot_voice.is_playing():
-            _loop.create_task(self.playing_now(ctx,'Odtwarzanie'))
-        else:
-            _loop.create_task(self.playing_now(ctx,'Dodano do kolejki'))
+        if (bot_voice is None and author_voice is not None) or (bot_voice is not None and not bot_voice.is_playing()):
+            _loop.create_task(self.playing_now(ctx,'Odtwarzanie',len(self.music_queue)))
+        elif bot_voice is not None:
+            _loop.create_task(self.playing_now(ctx,'Dodano do kolejki',len(self.music_queue)))
 
         if bot_voice is not None:
             self.music_queue.append(music_url)
@@ -106,7 +106,7 @@ class muzyka(commands.Cog):
             await ctx.send('Musisz być na kanale głosowym, aby to zrobić!')
 
     @play_command.error
-    async def play_queue(self,ctx, error):
+    async def play_queue(self,ctx,error):
         if isinstance(error, commands.MissingRequiredArgument):
             bot_voice = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild)
             author_voice = ctx.author.voice

@@ -3,7 +3,7 @@ import traceback
 from discord.ext import commands
 from dotenv import load_dotenv
 
-extensions = ['muzyka']
+extensions = ['muzyka','cointoss','guessthenumber','tictactoe']
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')

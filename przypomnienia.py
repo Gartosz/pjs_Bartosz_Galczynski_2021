@@ -8,7 +8,7 @@ connection = sqlite3.connect('dates.db')
 cursor = connection.cursor()
 cursor2=connection.cursor()
 
-cursor.execute("CREATE TABLE IF NOT EXISTS wydarzenia (id INTEGER PRIMARY KEY AUTOINCREMENT,nazwa TEXT, data DATE, opis TEXT)")
+cursor.execute("CREATE TABLE IF NOT EXISTS wydarzenia (id INTEGER PRIMARY KEY AUTOINCREMENT,nazwa TEXT, data DATE, opis TEXT, uid BIGINT)")
 cursor2.execute("CREATE TABLE IF NOT EXISTS przypomnienia (id INTEGER, data DATE)")
 
 bot=commands.Bot(command_prefix='=')
@@ -59,7 +59,7 @@ class przypomnienia(commands.Cog):
                         return
                 if(p!=''):
                     czasy_.append(str(p))
-        cursor.execute("INSERT INTO wydarzenia (nazwa,data,opis) VALUES(\"" + nazwa + "\",\"" + str(data_) + "\",\"" + opis + "\")")
+        cursor.execute("INSERT INTO wydarzenia (nazwa,data,opis,uid) VALUES(\"" + nazwa + "\",\"" + data_.strftime('%d.%m.%Y %H:%M') + "\",\"" + opis + "\",\"" + str(ctx.author.id) +"\")")
         for x in czasy_:
             cursor2.execute("INSERT INTO przypomnienia VALUES(\"" + str(cursor.lastrowid) + "\",\"" + x + "\")")
         connection.commit()

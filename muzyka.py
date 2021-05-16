@@ -278,12 +278,8 @@ class muzyka(commands.Cog):
             self.loop+=1
             if self.loop==3:
                 self.loop=0
-            if self.loop==0:
-                await ctx.send('Zapętlanie wyłączone.')
-            elif self.loop==1:
-                await ctx.send('Zapętlanie wszystkich utworów w kolejce')
-            elif self.loop==2:
-                await ctx.send('Zapętlanie obecnego utworu.')
+            communicats = ['Zapętlanie wyłączone.', 'Zapętlanie wszystkich utworów w kolejce', 'Zapętlanie obecnego utworu.']
+            await ctx.send(communicats[self.loop])
 
 
 def setup(bot):

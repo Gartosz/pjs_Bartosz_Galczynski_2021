@@ -287,28 +287,31 @@ class przypomnienia(commands.Cog):
                                 dates.append(parse(edit[i] + ' ' + edit[i + 1], dayfirst=True))
                                 i += 2
 
-                            if not dates:
+                            if not dates and edit[i] != 'all' and edit[i] != 'wszystkie':
                                 await ctx.send('Brak wymaganych danych!')
                                 return
-
-                            i += 1
 
                             if rodzaje.index(typ) < 2:
                                 if not len(dates) % 2:
                                     j = 0
                                     while j < len(dates):
-                                        for x in rows_p:
-                                            if dates[j].strftime('%d.%m.%Y %H:%M') == x[1]:
+                                        if any(dates[j + 1].strftime('%d.%m.%Y %H:%M') in x for x in rows_p):
+                                            await ctx.send('Nie możesz wielokrotnie podać takiej samej daty przypomnienia!')
+                                            return
+                                        for x in range(len(rows_p)):
+                                            if dates[j].strftime('%d.%m.%Y %H:%M') == rows_p[x][1]:
                                                 if reminder_check(ctx, dates[j + 1], datetime.datetime.strptime(row_w[2],'%d.%m.%Y %H:%M')):
                                                     return
 
-                                                cursor2.execute("UPDATE przypomnienia SET data = \"" + dates[j + 1].strftime('%d.%m.%Y %H:%M') + "\" WHERE id = \"" + str(id_) + "\" AND data = \"" + x[1] + "\"")
+                                                cursor2.execute("UPDATE przypomnienia SET data = \"" + dates[j + 1].strftime('%d.%m.%Y %H:%M') + "\" WHERE id = \"" + str(id_) + "\" AND data = \"" + rows_p[x][1] + "\"")
                                                 connection.commit()
+                                                cursor2.execute("SELECT * FROM przypomnienia WHERE id = \"" + str(id_) + "\"")
+                                                rows_p = cursor2.fetchall()
 
                                                 j += 2
                                                 break
 
-                                        if not j % 2:
+                                        if j % 2:
                                             await ctx.send('Taka data nie istnieje!')
                                             return
 
@@ -316,9 +319,14 @@ class przypomnienia(commands.Cog):
                                     await ctx.send('Zbyt mała ilość dat!')
 
                             elif rodzaje.index(typ) < 4:
+                                if edit[i] == 'all' or edit[i] == 'wszystkie':
+                                    cursor2.execute("DELETE FROM przypomnienia WHERE id = \"" + str(id_) + "\"")
+                                    connection.commit()
+                                    return
                                 for x in dates:
                                     j = 1
                                     for y in rows_p:
+
                                         if x.strftime('%d.%m.%Y %H:%M') == y[1]:
                                             cursor2.execute("DELETE FROM przypomnienia WHERE id = \"" + str(id_) + "\" AND data = \"" + y[1] + "\"")
                                             connection.commit()
@@ -331,6 +339,9 @@ class przypomnienia(commands.Cog):
                             else:
                                 for x in dates:
                                     if reminder_check(ctx, x, datetime.datetime.strptime(row_w[2],'%d.%m.%Y %H:%M')):
+                                        return
+                                    if any(x.strftime('%d.%m.%Y %H:%M') in y for y in rows_p) or len(dates) != len(set(dates)):
+                                        await ctx.send('Nie możesz wielokrotnie podać takiej samej daty przypomnienia!')
                                         return
                                     cursor2.execute("INSERT INTO przypomnienia VALUES(\"" + str(id_) + "\",\"" + x.strftime('%d.%m.%Y %H:%M') + "\")")
                                     connection.commit()

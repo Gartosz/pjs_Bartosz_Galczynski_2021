@@ -178,38 +178,43 @@ class przypomnienia(commands.Cog):
         user = await self.bot.fetch_user(ctx.author.id)
 
         if rows_w:
-            msg = ''
+            msg = '```'
             for row_w in rows_w:
                 msg += 'ID: ' + str(row_w[0]) + ' Wydarzenie ' + row_w[1] + ' odbędzie się ' + row_w[2] + '. Opis: ' + row_w[3] + '.\nPrzypomnienia: '
                 for row_p in rows_p:
                     if row_w[0] == row_p[0]:
                         msg += row_p[1] + ' '
                 msg += '\n\n'
-
+            msg += '```'
             await user.send(msg)
 
         else:
             await user.send('Nie masz ustawionych żadnych wydarzeń!')
 
     @bot.command(name='delete', aliases=['usuń_wydarzenie', 'delete_event'], description='Usuwa wydarzenie od podanym id')
-    async def delete_command(self, ctx, *, id_ ):
+    async def delete_command(self, ctx, *id_):
         cursor.execute("SELECT * FROM wydarzenia WHERE uid=\"" + str(ctx.author.id) + "\"")
         rows_w = cursor.fetchall()
 
         user = await self.bot.fetch_user(ctx.author.id)
 
         if rows_w:
+            x = 0
+            msg = 'Wydarzenie '
             for row_w in rows_w:
-                if int(row_w[0]) == int(id_):
-
-                    msg = 'Wydarzenie ' + str(row_w[1]) + ' zostało usunięte.'
-                    await user.send(msg)
-                    cursor2.execute("DELETE FROM przypomnienia WHERE id=\"" + str(id_) + "\"")
-                    cursor.execute("DELETE FROM wydarzenia WHERE id=\"" + str(id_) + "\"")
+                if int(row_w[0]) == int(id_[x]):
+                    msg += str(row_w[1]) + ', '
+                    cursor2.execute("DELETE FROM przypomnienia WHERE id=\"" + str(id_[x]) + "\"")
+                    cursor.execute("DELETE FROM wydarzenia WHERE id=\"" + str(id_[x]) + "\"")
                     connection.commit()
-                    return
+                    if x == len(id_) - 1:
+                        msg = msg[:-2]
+                        msg += ' zostało usunięte.'
+                        await user.send(msg)
+                        return
+                    x += 1
 
-            await user.send('Wydarzenie o tym id nie istnieje, bądź nie jest utworzone przez Ciebie')
+            await user.send('Wydarzenie o id ' + id_[x] + ' nie istnieje, bądź nie jest utworzone przez Ciebie')
 
         else:
             await user.send('Nie masz ustawionych żadnych wydarzeń!')

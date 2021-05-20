@@ -7,7 +7,7 @@ class cointoss(commands.Cog):
     def __init__(self,bot):
         self.bot=bot
 
-    @bot.command(name='cointoss', aliases=['moneta'])
+    @bot.command(name='cointoss', aliases=['moneta'], description='Losuje reszkę lub orła')
     async def coin_toss(self, ctx):
         x = ['Wypadła reszka','Wypadł orzeł']
         side = random.choice(x)

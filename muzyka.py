@@ -66,7 +66,7 @@ class muzyka(commands.Cog):
             self.stop=1
 
 
-    @bot.command(name='play', aliases=['graj','p'])
+    @bot.command(name='play', aliases=['graj','p'], description='Odtwarza utwór lub dodaje go do kolejki na podstawie wpisanego linku/tytułu lub kontynuuje odtwarzanie z kolejki')
     async def play_command(self,ctx,*,music_name):
         bot_voice = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild)
         author_voice = ctx.author.voice
@@ -128,7 +128,7 @@ class muzyka(commands.Cog):
             else:
                 await ctx.send("Brak muzyki w kolejce!")
 
-    @bot.command(name='quit', aliases=['wyjdź'])
+    @bot.command(name='quit', aliases=['wyjdź'], description='Odłącza bota od serwera głosowego')
     async def quit_command(self,ctx):
         voice = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild)
         if voice != None:
@@ -136,7 +136,7 @@ class muzyka(commands.Cog):
         else:
             await ctx.send('Bot nie jest połączony z żadnym kanałem głosowym!')
 
-    @bot.command(name='pause', aliases=['pauza'])
+    @bot.command(name='pause', aliases=['pauza'], description='Pauzuje aktualny utwór')
     async def pause_command(self,ctx):
         voice = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild)
         if voice == None:
@@ -146,7 +146,7 @@ class muzyka(commands.Cog):
         else:
             await ctx.send('Obecnie nic nie jest odtwarzane!')
 
-    @bot.command(name='resume', aliases=['wznów'])
+    @bot.command(name='resume', aliases=['wznów'], description='Wznawia zpauzowany utwór')
     async def resume_command(self,ctx):
         voice = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild)
         if voice == None:
@@ -156,7 +156,7 @@ class muzyka(commands.Cog):
         else:
             await ctx.send('Aby wznowić musisz najpierw zapauzować!')
 
-    @bot.command(name='stop', aliases=['zatrzymaj'])
+    @bot.command(name='stop', aliases=['zatrzymaj'], description='Zatrzymuje odtwarzanie')
     async def stop_command(self, ctx):
         voice = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild)
         if voice == None:
@@ -169,7 +169,7 @@ class muzyka(commands.Cog):
         else:
             await ctx.send('Obecnie nic nie jest odtwarzane!')
 
-    @bot.command(name='move', aliases=['przesuń','m'])
+    @bot.command(name='move', aliases=['przesuń','m'], description='Przesuwa do podanego czasu')
     async def move_command(self, ctx,*, time):
         voice = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild)
         ffmpeg_options_ = {
@@ -187,7 +187,7 @@ class muzyka(commands.Cog):
         else:
             await ctx.send('Obecnie nic nie jest odtwarzane!')
 
-    @bot.command(name='volume', aliases=['głośność','v'])
+    @bot.command(name='volume', aliases=['głośność','v'], description='Zmienia głośność')
     async def volume_command(self,ctx,*,vol):
         voice = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild)
         if voice == None:
@@ -198,7 +198,7 @@ class muzyka(commands.Cog):
         else:
             await ctx.send('Obecnie nic nie jest odtwarzane!')
 
-    @bot.command(name='skip', aliases=['pomiń','s'])
+    @bot.command(name='skip', aliases=['pomiń','s'], description='Pomija aktualny utwór')
     async def skip_command(self,ctx):
         voice = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild)
         if voice == None:
@@ -210,7 +210,7 @@ class muzyka(commands.Cog):
         else:
             await ctx.send('Obecnie nic nie jest odtwarzane!')
 
-    @bot.command(name='queue', aliases=['kolejka','q'])
+    @bot.command(name='queue', aliases=['kolejka','q'], description='Wyświetla zawartosć kolejki')
     async def queue_command(self,ctx):
         titles='Kolejka:\n'
         for x in range(len(self.music_queue)):
@@ -221,7 +221,7 @@ class muzyka(commands.Cog):
         await ctx.send(titles)
 
 
-    @bot.command(name='remove', aliases=['usuń','r'])
+    @bot.command(name='remove', aliases=['usuń','r'], description='Usuwa piosenkę od podanym numerze z kolejki')
     async def remove_command(self,ctx,*,n):
         n=int(n)
         if len(self.music_queue)>=n:
@@ -232,13 +232,13 @@ class muzyka(commands.Cog):
         else:
             await ctx.send('Kolejka nie zawiera utworu o takim numerze.')
 
-    @bot.command(name='clear',aliases=['wyczyść','c'])
+    @bot.command(name='clear',aliases=['wyczyść','c'], description='Czyści kolejkę')
     async def clear_command(self,ctx):
         self.music_queue.clear()
         self.number=-1
         await ctx.send('Wyczyszczono kolejkę odtwarzania.')
 
-    @bot.command(name='goto',aliases=['g','zmień'])
+    @bot.command(name='goto',aliases=['g','zmień'], description='Przechodzi do utworu o podanym numerze')
     async def goto_command(self,ctx,*,n):
         voice = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild)
         author_voice = ctx.author.voice
@@ -260,7 +260,7 @@ class muzyka(commands.Cog):
         else:
             await ctx.send('Brak utworu o takim numerze!')
 
-    @bot.command(name='loop',aliases=['zapętl','l'])
+    @bot.command(name='loop',aliases=['zapętl','l'], description='Zmienia ustawienia zapętlania')
     async def loop_command(self,ctx,*,option):
         if option == 'stop':
             self.loop=0

@@ -124,7 +124,7 @@ class tictactoe(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @bot.command(name='tictactoe',aliases=['kółkokrzyżyk','ttt','kk'])
+    @bot.command(name='tictactoe',aliases=['kółkokrzyżyk','ttt','kk'], description='Uruchamia grę w kółko i krzyżyk o podanym poziomie trudności 1,2 lub 3')
     async def start(self,ctx,lvl=1):
         if lvl<1 or lvl>3:
             await ctx.send('Nie ma takiego poziomu trudności')

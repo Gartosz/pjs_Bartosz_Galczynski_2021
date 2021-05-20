@@ -85,7 +85,7 @@ class przypomnienia(commands.Cog):
             self.sec = 60
             self.time_check.change_interval(seconds=self.sec)
 
-    @bot.command(name='reminder',aliases=['przypomnienie','notification'])
+    @bot.command(name='event',aliases=['wydarzenie', 'przypomnienie', 'notification', 'new', 'add', 'nowe', 'reminder'], description='Pozwala na dodanie nowego wydarzenia: =event nazwa data godzina opis(między znakami -) daty przypomnień')
     async def reminder_command(self, ctx, nazwa, data, godzina, *czasy):
         try:
             data_=parse(data+' '+godzina, dayfirst=True)
@@ -97,9 +97,10 @@ class przypomnienia(commands.Cog):
             await ctx.send('Data wydarzenia musi być w przyszłości!')
             return
 
-        czasy_=[]
-        opis=''
-        i=0
+        czasy_ = []
+        opis = ''
+        i = 0
+        n = 0
         for x in czasy:
             p = ''
             if x[0]=='-':
@@ -134,12 +135,18 @@ class przypomnienia(commands.Cog):
                 if reminder_check(ctx, datetime.datetime.strptime(p, '%d.%m.%Y %H:%M'), data_):
                     return
 
-                if(p!=''):
+                if p != '' and len(czasy_) < 5:
                     czasy_.append(str(p))
+
+                elif len(czasy_) >= 5:
+                    n += 1
 
         if len(czasy_) != len(set(czasy_)):
             await ctx.send('Nie możesz wielokrotnie podać takiej samej daty przypomnienia!')
             return
+
+        if n:
+            await ctx.send('Możesz ustawić maksymalnie 5 przypomnień, dlatego ostatnie ' + str(n) + ' nie zostały dodane.')
 
         cursor.execute("INSERT INTO wydarzenia (nazwa,data,opis,uid) VALUES(\"" + nazwa + "\",\"" + data_.strftime('%d.%m.%Y %H:%M') + "\",\"" + opis + "\",\"" + str(ctx.author.id) +"\")")
         for x in czasy_:
@@ -161,7 +168,7 @@ class przypomnienia(commands.Cog):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send('Brak wymaganych danych!')
 
-    @bot.command(name='events',aliases=['wydarzenia','wyświetl_wydarzenia','show_events'])
+    @bot.command(name='events',aliases=['wydarzenia','wyświetl_wydarzenia','show_events'], description='Wyświetla wydarzenia użytkownika w prywatnej wiadomości')
     async def events_command(self, ctx):
         cursor.execute("SELECT * FROM wydarzenia WHERE uid=\"" + str(ctx.author.id) + "\"")
         rows_w = cursor.fetchall()
@@ -184,7 +191,7 @@ class przypomnienia(commands.Cog):
         else:
             await user.send('Nie masz ustawionych żadnych wydarzeń!')
 
-    @bot.command(name='delete', aliases=['usuń_wydarzenie', 'delete_event'])
+    @bot.command(name='delete', aliases=['usuń_wydarzenie', 'delete_event'], description='Usuwa wydarzenie od podanym id')
     async def delete_command(self, ctx, *, id_ ):
         cursor.execute("SELECT * FROM wydarzenia WHERE uid=\"" + str(ctx.author.id) + "\"")
         rows_w = cursor.fetchall()
@@ -212,7 +219,7 @@ class przypomnienia(commands.Cog):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send('Brak wymaganych danych!')
 
-    @bot.command(name='edit', aliases=['edytuj', 'edit_event', 'edytuj_wydarzenie'])
+    @bot.command(name='edit', aliases=['edytuj', 'edit_event', 'edytuj_wydarzenie'], description='Pozwala na edycję wydarzenia o podanym id: =edit id typ (nazwa, data, opis, przypomnienie) dane')
     async def edit_command(self, ctx, id_, *edit):
         cursor.execute("SELECT * FROM wydarzenia WHERE uid=\"" + str(ctx.author.id) + "\"")
         rows_w = cursor.fetchall()
@@ -337,6 +344,9 @@ class przypomnienia(commands.Cog):
                                         return
 
                             else:
+                                if len(rows_p) > 5:
+                                    await ctx.send('Nie możesz dodać kolejnego przypomnienia!')
+                                    return
                                 for x in dates:
                                     if reminder_check(ctx, x, datetime.datetime.strptime(row_w[2],'%d.%m.%Y %H:%M')):
                                         return

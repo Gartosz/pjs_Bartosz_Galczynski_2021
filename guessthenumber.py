@@ -8,7 +8,7 @@ class guessthenumber(commands.Cog):
     def __init__(self,bot):
         self.bot=bot
 
-    @bot.command(name='guess_the_number',aliases=['zgadnij_liczbę'])
+    @bot.command(name='guess_the_number',aliases=['zgadnij_liczbę', 'zgadywanie'], description='Umożliwia zgadnięcie wylosowanej liczby całkowitej od 0 do 10, bądź z podanego zakresu')
     async def guess(self,ctx,a=0,b=10):
 
         await ctx.send("Musisz zgadnąć liczbę z zakresu od "+str(a)+" do "+str(b))

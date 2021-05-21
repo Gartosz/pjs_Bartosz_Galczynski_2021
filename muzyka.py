@@ -212,12 +212,16 @@ class muzyka(commands.Cog):
 
     @bot.command(name='queue', aliases=['kolejka','q'], description='Wyświetla zawartosć kolejki')
     async def queue_command(self,ctx):
-        titles='Kolejka:\n'
+        titles = 'Kolejka:\n'
         for x in range(len(self.music_queue)):
             titles+=(str(x+1)+'. '+get_video_title(self.music_queue[x]))
             if x==self.number:
                 titles+=(" <- teraz odtwarzane")
             titles+=('\n')
+
+        if titles == 'Kolejka:\n':
+            titles = 'Nic tu nie ma :('
+
         await ctx.send(titles)
 
 

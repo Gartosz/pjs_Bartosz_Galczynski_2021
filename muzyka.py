@@ -52,7 +52,7 @@ class muzyka(commands.Cog):
 
     def play_next(self,ctx):
         voice = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild)
-        if self.loop<2:
+        if self.loop<2 and self.stop:
             self.number += 1
         if len(self.music_queue)==self.number and self.loop==1:
             self.number=0
@@ -248,7 +248,8 @@ class muzyka(commands.Cog):
         if self.music_queue[n-1]:
             if voice.is_playing() and voice is not None:
                 voice.stop()
-            self.number=n-1
+            self.number = n-1
+            self.stop = 0
             self.current=self.music_queue[self.number]
             if voice is not None:
                 voice.play(discord.FFmpegPCMAudio(self.yt_play(self.current), **ffmpeg_options), after=lambda a: self.play_next(ctx))

@@ -226,8 +226,7 @@ class muzyka(commands.Cog):
 
 
     @bot.command(name='remove', aliases=['usuń','r'], description='Usuwa piosenkę od podanym numerze z kolejki')
-    async def remove_command(self,ctx,*,n):
-        n=int(n)
+    async def remove_command(self, ctx , n: int):
         if len(self.music_queue)>=n:
             del self.music_queue[n-1]
             if self.number>=n-1:
@@ -237,13 +236,13 @@ class muzyka(commands.Cog):
             await ctx.send('Kolejka nie zawiera utworu o takim numerze.')
 
     @bot.command(name='clear',aliases=['wyczyść','c'], description='Czyści kolejkę')
-    async def clear_command(self,ctx):
+    async def clear_command(self, ctx):
         self.music_queue.clear()
         self.number=-1
         await ctx.send('Wyczyszczono kolejkę odtwarzania.')
 
     @bot.command(name='goto',aliases=['g','zmień'], description='Przechodzi do utworu o podanym numerze')
-    async def goto_command(self,ctx,*,n):
+    async def goto_command(self, ctx, n: int):
         voice = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild)
         author_voice = ctx.author.voice
         if self.music_queue[n-1]:

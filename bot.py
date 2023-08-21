@@ -4,13 +4,14 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
-extensions = ['muzyka','cointoss','guessthenumber','tictactoe','przypomnienia']
+extensions = ['muzyka', 'cointoss', 'guessthenumber', 'tictactoe', 'przypomnienia']
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
 
-bot=commands.Bot(command_prefix='=')
+bot = commands.Bot(command_prefix='=')
+
 
 @bot.event
 async def on_ready():
@@ -22,6 +23,7 @@ async def on_ready():
         f'{bot.user} jest aktywny na serwerze:\n'
         f'{guild.name}(id: {guild.id})\n'
     )
+
 
 if __name__ == '__main__':
     for x in extensions:

@@ -1,36 +1,13 @@
-import os
-import traceback
-import discord
+from os import getenv
 from discord.ext import commands
+from discord import Intents
 from dotenv import load_dotenv
-
-extensions = ['muzyka', 'cointoss', 'guessthenumber', 'tictactoe', 'przypomnienia']
-
-load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN')
-GUILD = os.getenv('DISCORD_GUILD')
-
-bot = commands.Bot(command_prefix='=')
-
-
-@bot.event
-async def on_ready():
-    for guild in bot.guilds:
-        if guild.name == GUILD:
-            break
-
-    print(
-        f'{bot.user} jest aktywny na serwerze:\n'
-        f'{guild.name}(id: {guild.id})\n'
-    )
-
+from BotData import BotData
 
 if __name__ == '__main__':
-    for x in extensions:
-        try:
-            bot.load_extension(x)
-        except (discord.ClientException, ModuleNotFoundError):
-            print(f'Failed to load extension {x}.')
-            traceback.print_exc()
-
-bot.run(TOKEN, bot=True, reconnect=True)
+    load_dotenv()
+    bot = BotData(client=commands.Bot(command_prefix='=', intents=Intents.default()),
+                  extensions=['muzyka', 'cointoss', 'guessthenumber', 'tictactoe', 'przypomnienia'],
+                  _token=getenv('DISCORD_TOKEN'),
+                  guild=getenv('DISCORD_GUILD'))
+    bot.start()

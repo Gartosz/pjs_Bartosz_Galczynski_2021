@@ -2,14 +2,12 @@ import random
 import asyncio
 from discord.ext import commands
 
-bot = commands.Bot(command_prefix='=')
-
 
 class guessthenumber(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @bot.command(name='guess_the_number', aliases=['zgadnij_liczbę', 'zgadywanie'],
+    @commands.command(name='guess_the_number', aliases=['zgadnij_liczbę', 'zgadywanie'],
                  description='Umożliwia zgadnięcie wylosowanej liczby całkowitej od 0 do 10, bądź z podanego zakresu')
     async def guess(self, ctx, a=0, b=10):
 

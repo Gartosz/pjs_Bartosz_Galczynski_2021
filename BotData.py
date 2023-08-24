@@ -20,9 +20,10 @@ class BotData:
         for x in self.extensions:
             try:
                 self.client.load_extension(x)
-            except (ClientException, ModuleNotFoundError):
-                print(f'Failed to load extension {x}.')
+            except (ClientException, ModuleNotFoundError) as exception:
+                exception.args += f'Failed to load extension {x}.'
                 print_exc()
+                raise exception
 
     async def on_ready(self):
         for guild in self.client.guilds:

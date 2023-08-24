@@ -2,8 +2,7 @@ import random
 from discord.ext import commands
 
 
-
-class cointoss(commands.Cog):
+class Cointoss(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -15,4 +14,4 @@ class cointoss(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(cointoss(bot))
+    bot.add_cog(Cointoss(bot))

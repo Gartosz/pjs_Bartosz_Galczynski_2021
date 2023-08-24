@@ -36,4 +36,4 @@ class BotData:
         )
 
     def start(self):
-        self.bot.run(self.token, reconnect=True)
+        self.client.run(self.token, reconnect=True)

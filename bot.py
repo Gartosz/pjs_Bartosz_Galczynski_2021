@@ -9,5 +9,6 @@ if __name__ == '__main__':
     bot = BotData(client=commands.Bot(command_prefix='=', intents=Intents.default()),
                   extensions=['muzyka', 'cointoss', 'guessthenumber', 'tictactoe', 'przypomnienia'],
                   _token=getenv('DISCORD_TOKEN'),
-                  guild=getenv('DISCORD_GUILD'))
+                  guild=getenv('DISCORD_GUILD')
+                  )
     bot.start()

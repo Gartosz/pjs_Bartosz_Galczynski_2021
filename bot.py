@@ -7,7 +7,7 @@ from BotData import BotData
 if __name__ == '__main__':
     load_dotenv()
     bot = BotData(client=commands.Bot(command_prefix='=', intents=Intents.default()),
-                  extensions=['muzyka', 'cointoss', 'guessthenumber', 'tictactoe', 'przypomnienia'],
+                  extensions=['muzyka', 'cointoss', 'numberguesser', 'tictactoe', 'przypomnienia'],
                   _token=getenv('DISCORD_TOKEN'),
                   guild=getenv('DISCORD_GUILD')
                   )
